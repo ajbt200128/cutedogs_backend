@@ -8,16 +8,25 @@ import java.util.List;
 public class ResponseHandler<T> {
     public String json;
 
+    public void setGson(Gson gson) {
+        this.gson = gson;
+    }
+
+    private Gson gson = new Gson();
     public ResponseHandler(Status status, T data) {
-        this.json = new Gson().toJson(new Response(data, status));
+        this.json = gson.toJson(new Response(data, status));
     }
-
+    public ResponseHandler(Status status, T data,Gson gson) {
+        this.json = gson.toJson(new Response(data, status));
+    }
     public ResponseHandler(Status status, List<T> data) {
-        this.json = new Gson().toJson(new Response(data, status));
+        this.json = gson.toJson(new Response(data, status));
     }
-
+    public ResponseHandler(Status status, List<T> data,Gson gson) {
+        this.json = gson.toJson(new Response(data, status));
+    }
     public ResponseHandler(Status status, String message) {
-        this.json = new Gson().toJson(new Response(status, message));
+        this.json = gson.toJson(new Response(status, message));
     }
 
     public ResponseHandler(Status status) {

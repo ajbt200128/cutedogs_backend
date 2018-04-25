@@ -2,6 +2,7 @@ package controllers;
 
 import Utils.ResponseHandler;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import database.GenericDatabase;
 import database.Tables;
 import models.Model;
@@ -16,26 +17,44 @@ public class GenericController<M extends Model, T extends Tables.Table, D extend
     public D database;
     public Class<M> mClass;
     public Route getItems = (request, response) -> {
-        List<M> ms = database.getAll();
+        List<M> ms;
+        if (request.queryParams("count")!=null)
+            ms = database.getAll(Integer.parseInt(request.queryParams("count")));
+        else
+            ms = database.getAll();
+
         return (new ResponseHandler<M>(ResponseHandler.Status.SUCCESS, ms).json);
     };
     public Route getItem = (request, response) -> {
-        System.out.println(request.params(":uuid"));
-        M item = database.get(UUID.fromString(request.params(":uuid")));
+        UUID uuid;
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
+        try{
+            uuid = UUID.fromString(request.params(":uuid"));
+        }catch (IllegalArgumentException e){
+            response.status(400);
+            return (new ResponseHandler(ResponseHandler.Status.FAILURE,"Invalid UUID string: "+request.params(":uuid")).json);
+        }
+        M item = database.get(uuid);
         //if not null
         if (item == null)
             halt(404, "Item not found");
-        return (new ResponseHandler<M>(ResponseHandler.Status.SUCCESS, item).json);
+
+        return new ResponseHandler<M>(ResponseHandler.Status.SUCCESS, item,gson).json;
     };
     public Route createItem = (request, response) -> {
         //TODO validation
-        M item = new Gson().fromJson(request.body(), mClass);
+        System.out.println("AAAA");
+        Gson gson = new GsonBuilder().setDateFormat("MMMMMMMMMM dd, yyyy").create();
+        M item = gson.fromJson(request.body(), mClass);
 
         boolean result = database.insert(item);
         return (new ResponseHandler<M>(ResponseHandler.Status.fromBool(result))).json;
     };
     public Route updateItem = (request, response) -> {
-        M item = new Gson().fromJson(request.body(), mClass);
+        Gson gson = new GsonBuilder().setDateFormat("MMMMMMMMMM dd, yyyy").create();
+        System.out.println(request.body());
+        M item = gson.fromJson(request.body(), mClass);
+
         boolean result = database.update(item);
         return (new ResponseHandler<M>(ResponseHandler.Status.fromBool(result))).json;
     };

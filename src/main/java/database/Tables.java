@@ -25,7 +25,6 @@ public class Tables {
         public static final String DOG_LIKES = "dog_likes";
         public static final String DOG_DISLIKES = "dog_dislikes";
         public static final String BIOGRAPHY = "biography";
-        public static final String POINTS = "points";
 
         @Override
         public String getName() {
@@ -45,7 +44,6 @@ public class Tables {
                     "" + DOG_LIKES + " VARCHAR(500)," +
                     "" + DOG_DISLIKES + " VARCHAR(500)," +
                     "" + BIOGRAPHY + " VARCHAR(500)," +
-                    "" + POINTS + " INT," +
                     "PRIMARY KEY (" + UUID + ")," +
                     "FOREIGN KEY (" + OWNER_UUID + ") REFERENCES " + UserTable.TABLE_NAME + "(" + UserTable.UUID + ") " +
                     "ON DELETE CASCADE " +
@@ -65,8 +63,7 @@ public class Tables {
                     "" + BREED + "," +
                     "" + DOG_LIKES + "," +
                     "" + DOG_DISLIKES + "," +
-                    "" + BIOGRAPHY + "," +
-                    "" + POINTS + "";
+                    "" + BIOGRAPHY;
         }
     }
 
@@ -106,8 +103,6 @@ public class Tables {
         public static final String UUID = "uuid";
         public static final String DOG_UUID = "dog_uuid";
         public static final String TAGS = "tags";
-        public static final String LIKES = "likes";
-        public static final String DISLIKES = "dislikes";
         public static final String IMAGE_LINK = "image_link";
 
         @Override
@@ -121,8 +116,6 @@ public class Tables {
                     "" + UUID + " VARCHAR(191)," +
                     "" + DOG_UUID + " VARCHAR(191)," +
                     "" + TAGS + " VARCHAR(255)," +
-                    "" + LIKES + " INT," +
-                    "" + DISLIKES + " INT," +
                     "" + IMAGE_LINK + " VARCHAR(255)," +
                     "PRIMARY KEY (" + UUID + ")," +
                     "FOREIGN KEY (" + DOG_UUID + ") REFERENCES " + DogTable.TABLE_NAME + "(" + DogTable.UUID + ") " +
@@ -137,10 +130,33 @@ public class Tables {
                     "" + UUID + "," +
                     "" + DOG_UUID + "," +
                     "" + TAGS + "," +
-                    "" + LIKES + "," +
-                    "" + DISLIKES + "," +
                     "" + IMAGE_LINK +
                     "";
+        }
+    }
+
+    public static class LikesTable implements Table{
+        public static final String TABLE_NAME = "likes";
+        public static final String USER = "user";
+        public static final String IMAGE = "image";
+
+        @Override
+        public String getName() {
+            return TABLE_NAME;
+        }
+
+        @Override
+        public String getSQL() {
+            return "("+IMAGE+" varchar(191),"+
+                    ""+USER+" varchar(191)," +
+                    "FOREIGN KEY ("+USER+") REFERENCES "+UserTable.TABLE_NAME+" ("+UserTable.UUID+"),"+
+                    "FOREIGN KEY ("+IMAGE+") REFERENCES "+ImageTable.TABLE_NAME+" ("+ImageTable.UUID+") ON DELETE CASCADE ON UPDATE CASCADE"
+                    +")";
+        }
+
+        @Override
+        public String getRows() {
+            return IMAGE+", "+USER;
         }
     }
 

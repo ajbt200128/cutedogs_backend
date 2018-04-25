@@ -88,7 +88,7 @@ public class DatabaseController {
     public void deleteTables() {
         try {
             Statement statement = (Statement) connection.createStatement();
-            String sql = "DROP TABLE IF EXISTS " + Tables.ImageTable.TABLE_NAME + "," + Tables.DogTable.TABLE_NAME + "," + Tables.UserTable.TABLE_NAME + "," + Tables.ProfilesTable.TABLE_NAME + ";";
+            String sql = "DROP TABLE IF EXISTS "+ Tables.LikesTable.TABLE_NAME + ","+ Tables.ImageTable.TABLE_NAME + "," + Tables.DogTable.TABLE_NAME + "," + Tables.UserTable.TABLE_NAME + "," + Tables.ProfilesTable.TABLE_NAME +";";
 
             int result = statement.executeUpdate(sql);
             System.out.println("All Tables Dropped " + result);
@@ -104,6 +104,7 @@ public class DatabaseController {
         this.initTable(new Tables.DogTable());
         this.initTable(new Tables.ImageTable());
         this.initTable(new Tables.ProfilesTable());
+        this.initTable(new Tables.LikesTable());
     }
 
     public void initTable(Tables.Table t) {

@@ -15,7 +15,6 @@ public class Dog extends Model {
     public List<String> dogLikes;
     public List<String> dogDislikes;
     public String biography;
-    public int points;
     public List<Image> images;
 
     public Dog() {
@@ -38,7 +37,6 @@ public class Dog extends Model {
                 ", dogLikes=" + dogLikes +
                 ", dogDislikes=" + dogDislikes +
                 ", biography='" + biography + '\'' +
-                ", points=" + points +
                 ", images=" + images +
                 ", uuid=" + uuid +
                 '}';
