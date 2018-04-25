@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DatabaseController {
     private static final String DB_USERNAME = "cutedogs";
-    private static final String DB_PASS = "***REMOVED***";
+    private static final String DB_PASS = "password";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/cutedogs";
     private static DatabaseController ourInstance = new DatabaseController();
     private Connection connection;

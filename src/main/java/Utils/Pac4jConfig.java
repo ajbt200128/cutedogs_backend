@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Pac4jConfig {
     private static final String DB_USERNAME = "cutedogs";
-    private static final String DB_PASS = "***REMOVED***";
+    private static final String DB_PASS = "Buddydog1";
 
     private static final Pac4jConfig ourInstance = new Pac4jConfig();
 
