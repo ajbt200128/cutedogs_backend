@@ -1,3 +1,2 @@
 # Cutedogs Backend
-
-Rate dogs, like dogs, share dogs
+Java and spark java back end
