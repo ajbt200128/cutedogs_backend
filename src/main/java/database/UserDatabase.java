@@ -74,12 +74,12 @@ public class UserDatabase extends GenericDatabase<User, Tables.UserTable> {
     }
 
     @Override
-    User FromSQL(ResultSet resultSet) {
+    User fromSQL(ResultSet resultSet) {
         try {
-            if (resultSet.next()) {
+            if (resultSet != null) {
                 User user = new User(UUID.fromString(resultSet.getString(Tables.UserTable.UUID)));
-                user.name = resultSet.getString(Tables.UserTable.USERNAME);
-                user.username = resultSet.getString(Tables.UserTable.NAME);
+                user.name = resultSet.getString(Tables.UserTable.NAME);
+                user.username = resultSet.getString(Tables.UserTable.USERNAME);
                 user.dogs = original ? (new DogDatabase(false)).getAll(Tables.DogTable.OWNER_UUID, resultSet.getString(Tables.UserTable.UUID)) : null;
                 return user;
             }
@@ -92,7 +92,7 @@ public class UserDatabase extends GenericDatabase<User, Tables.UserTable> {
     @Override
     String[] ToSQL(User user) {
         return new String[]{
-                user.uuid.toString() ,
+                user.uuid.toString(),
                 user.name,
                 user.username
         };

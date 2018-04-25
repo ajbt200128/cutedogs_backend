@@ -22,7 +22,7 @@ class GenerateDogs {
     private static String[] usernames = {"fdbbdfb", "wg56", "rgtym5", "56h65", "ver45", "9gj4", "943n3", "ijt5", "5hh565", "h5jkskk"};
     private static String[] passwords = {"ree", "bee", "see", "pee", "lee", "jee"};
     private static String[] tags = {"cool", "fun", "cute", "funny", "nice", "big", "small", "corgi", "lab", "zoom", "hop", "pup", "oldpup", "midpup"};
-    private static String[] links = {"http://imgur.com/pupaffff", "http://imgur.com/pupegh", "http://imgur.com/puper", "http://imgur.com/pupieeee"};
+    private static String[] links = {"https://i.imgur.com/XsaLqi1.jpg", "https://i.imgur.com/oo67PIH.jpg", "https://i.imgur.com/wC3u4rM.jpg", "https://i.imgur.com/JlUvsxa.jpg","https://i.imgur.com/IzyN8fW.jpg","https://i.imgur.com/tnjGTBM.jpg"};
 
     private static String[] profileLinks = {"https://i.imgur.com/JXetxQh.jpg", "https://i.imgur.com/SazaHUq.jpg", "https://i.imgur.com/ydi5jMh.jpg", "https://i.imgur.com/Eq8jVm0.jpg", "https://i.imgur.com/W5dL1ut.jpg", "https://i.imgur.com/vrilVVO.jpg", "https://i.imgur.com/VrbPeHX.jpg", "https://i.imgur.com/PdWVKyt.jpg", "https://i.imgur.com/C9Wz6G8.jpg", "https://i.imgur.com/tnjGTBM.jpg", "https://i.imgur.com/Uycj63R.jpg", "https://i.imgur.com/IGGBxys.jpg", "https://i.imgur.com/mG7rmUW.jpg", "https://i.imgur.com/wC3u4rM.jpg", "https://i.imgur.com/wC3u4rM.jpg", "https://i.imgur.com/C73XTb6.jpg", "https://i.imgur.com/qzfVi4e.jpg", "https://i.imgur.com/oo67PIH.jpg", "https://i.imgur.com/JlUvsxa.jpg", "https://i.imgur.com/IzyN8fW.jpg", "https://i.imgur.com/XsaLqi1.jpg", "https://i.imgur.com/bdh4Qpn.jpg", "https://i.imgur.com/6oB0QRU.png", "https://i.imgur.com/LPsxLQE.png", "https://i.imgur.com/lUbmZlU.jpg", "https://i.imgur.com/2cGhWub.jpg"};
     private static String[] dogNames = {"max", "charlie", "bella", "lucy", "daisy", "buddy", "jack", "rocky", "oliver", "bear", "duke", "tucker", "luna", "lola", "sadie", "molly", "maggie", "bailey", "sophie"};
@@ -33,7 +33,7 @@ class GenerateDogs {
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus eget metus sit amet turpis bibendum convallis. Aliquam vel orci pretium, facilisis leo a, imperdiet sem. Nam blandit, elit et ultricies."};
     private static Date[] dates;
     private static String[] datesStr = {"3/9/2001", "8/24/2001", "4/3/2002", "11/5/2002", "11/4/2004", "1/17/2006", "1/30/2012", "1/10/2014", "10/8/2014", "11/5/2018"};
-
+    private static List<User> users = new ArrayList<>();
     public static void main(String[] args) {
         dates = new Date[datesStr.length];
         for (int i = 0; i < datesStr.length; i++) {
@@ -44,31 +44,38 @@ class GenerateDogs {
             }
         }
 
-        List<User> users = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             User user = genUser(i);
             user.dogs = new ArrayList<>();
             for (int j = 0; j < (new Random()).nextInt(5) + 1; j++) {
                 Dog dog = genDog(user.uuid);
                 dog.images = new ArrayList<>();
-                for (int k = 0; k < (new Random()).nextInt(5) + 1; k++)
-                    dog.images.add(genImage(dog.uuid));
+
                 user.dogs.add(dog);
             }
             users.add(user);
         }
-        System.out.println(users.size());
+        for (int i = 0; i < 10;i++){
+
+            User user = users.get(i);
+            for (int j = 0; j < user.dogs.size(); j++) {
+                Dog dog = user.dogs.get(j);
+                for (int k = 0; k < (new Random()).nextInt(5) + 1; k++)
+                    dog.images.add(genImage(dog.uuid));
+            }
+        }
+
         HttpPost httpPost;
 
         for (User user : users) {
             HttpClient client = HttpClientBuilder.create().build();
 
             try {
-                System.out.println("POST user " + user.name);
+
                 httpPost = new HttpPost(new URI("http://0.0.0.0:8080/api/users"));
                 httpPost.addHeader(HttpHeaders.AUTHORIZATION, genHeader(user));
                 httpPost.setEntity(new StringEntity(new Gson().toJson(user), "UTF-8"));
-                System.out.println("POST");
+
                 client.execute(httpPost);
                 //Thread.sleep(2000);
             } catch (URISyntaxException | IOException e) {
@@ -91,7 +98,6 @@ class GenerateDogs {
         dog.biography = biographies[random.nextInt(biographies.length)];
         dog.birthday = dates[random.nextInt(dates.length)];
         dog.breed = breeds[random.nextInt(breeds.length)];
-        dog.points = random.nextInt(1000) + 1;
         dog.profilePictureLink = profileLinks[random.nextInt(profileLinks.length)];
         dog.dogLikes = new ArrayList<>();
         dog.dogDislikes = new ArrayList<>();
@@ -108,12 +114,17 @@ class GenerateDogs {
         Random random = new Random();
         Image image = new Image();
         image.dog = dog;
-        image.likes = random.nextInt(1000) + 1;
-        image.dislikes = random.nextInt(1000) + 1;
         image.tags = new ArrayList<>();
+        image.likedBy = new ArrayList<>();
+        for (int i = 0; i < random.nextInt(3)+1;i++){
+            UUID uuid = users.get(random.nextInt(9)+1).uuid;
+            if (!image.likedBy.contains(uuid))
+                image.likedBy.add(uuid);
+        }
         for (int i = 0; i < random.nextInt(10) + 1; i++)
             image.tags.add(tags[random.nextInt(tags.length)]);
         image.imageLink = links[random.nextInt(links.length)];
+        System.out.println("Image");
         return image;
     }
 

@@ -22,7 +22,7 @@ public class Pac4jConfig {
 
     public final Config HTTPConfig;
     public final DbProfileService dbProfileService;
-    private final Config JWTConfig;
+    public final Config JWTConfig;
 
     private Pac4jConfig() {
         DatabaseController databaseController = DatabaseController.getInstance();
@@ -38,8 +38,11 @@ public class Pac4jConfig {
         DirectBasicAuthClient directBasicAuthClient = new DirectBasicAuthClient(dbProfileService);
         HTTPConfig = new Config(directBasicAuthClient);
         HTTPConfig.setHttpActionAdapter(new DefaultHttpActionAdapter());
-        HeaderClient headerClient = new HeaderClient("Authorization", "Bearer", JWTHelper.getAuthenticator());
+        HeaderClient headerClient = new HeaderClient("Authorization", "Bearer ", JWTHelper.getAuthenticator());
         JWTConfig = new Config(headerClient);
+        JWTConfig.setHttpActionAdapter(new DefaultHttpActionAdapter());
+
+
     }
 
     public static Pac4jConfig getInstance() {
@@ -50,7 +53,7 @@ public class Pac4jConfig {
         DbProfile customProfile = new DbProfile();//new CustomProfile(user);
         customProfile.setId(user.uuid);
         customProfile.addAttribute("username", user.username);
-        customProfile.addAttribute("uuid", user.uuid);
+        customProfile.addAttribute("uuid", user.uuid.toString());
         customProfile.addAttribute("name", user.name);
         dbProfileService.create(customProfile, password);
 
