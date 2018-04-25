@@ -1,6 +1,6 @@
 # Cutedogs Backend
 Java and spark java back end
-#Generate keys
+# Generate keys
 To generate keys for yourself run this in the root folder
 
 ```
