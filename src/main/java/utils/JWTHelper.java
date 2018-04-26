@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import database.UserDatabase;
 import org.pac4j.jwt.config.signature.RSASignatureConfiguration;

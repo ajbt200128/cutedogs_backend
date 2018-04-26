@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import database.DatabaseController;
 import models.User;
@@ -31,7 +31,7 @@ public class Pac4jConfig {
         dbProfileService.setPasswordEncoder(new SpringSecurityPasswordEncoder(new StandardPasswordEncoder("SALTTTT")));
         JavaSerializationHelper javaSerializationHelper = new JavaSerializationHelper();
         List<String> packages = javaSerializationHelper.getTrustedPackages();
-        packages.add("Utils.CustomProfile");
+        packages.add("utils.CustomProfile");
         javaSerializationHelper.setTrustedPackages(packages);
 
         dbProfileService.setJavaSerializationHelper(javaSerializationHelper);

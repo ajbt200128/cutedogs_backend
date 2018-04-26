@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import org.pac4j.core.profile.definition.ProfileDefinition;
 import org.pac4j.sql.profile.DbProfile;

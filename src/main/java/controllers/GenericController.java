@@ -1,6 +1,6 @@
 package controllers;
 
-import Utils.ResponseHandler;
+import utils.ResponseHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import database.GenericDatabase;

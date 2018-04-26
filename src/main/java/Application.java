@@ -1,5 +1,5 @@
-import Utils.Pac4jConfig;
-import Utils.TypeFilter;
+import utils.Pac4jConfig;
+import utils.TypeFilter;
 import controllers.DogController;
 import controllers.ImageController;
 import controllers.Paths;
@@ -12,7 +12,7 @@ import static spark.Spark.*;
 class Application {
 
     public static void main(String[] args) {
-        port(8080);
+        port(9090);
         DogController dogController = new DogController();
         UserController userController = new UserController();
         ImageController imageController = new ImageController();

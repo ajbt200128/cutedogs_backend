@@ -1,8 +1,8 @@
 package controllers;
 
-import Utils.JWTHelper;
-import Utils.Pac4jConfig;
-import Utils.ResponseHandler;
+import utils.JWTHelper;
+import utils.Pac4jConfig;
+import utils.ResponseHandler;
 import com.google.gson.Gson;
 import database.Tables;
 import database.UserDatabase;

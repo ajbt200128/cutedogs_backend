@@ -1,14 +1,13 @@
 package controllers;
 
-import Utils.JWTHelper;
-import Utils.ResponseHandler;
+import utils.JWTHelper;
+import utils.ResponseHandler;
 import database.ImageDatabase;
 import database.Tables;
 import models.Image;
 import org.pac4j.core.profile.CommonProfile;
 import spark.Route;
 
-import java.util.List;
 import java.util.UUID;
 
 public class ImageController extends GenericController<Image, Tables.ImageTable, ImageDatabase> {

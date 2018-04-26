@@ -1,6 +1,6 @@
 package controllers;
 
-import Utils.ResponseHandler;
+import utils.ResponseHandler;
 import database.DogDatabase;
 import database.Tables;
 import models.Dog;

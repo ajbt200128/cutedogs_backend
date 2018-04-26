@@ -4,6 +4,10 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +15,6 @@ import java.util.List;
 
 public class DatabaseController {
     private static final String DB_USERNAME = "cutedogs";
-    private static final String DB_PASS = "password";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/cutedogs";
     private static DatabaseController ourInstance = new DatabaseController();
     private Connection connection;
@@ -20,6 +23,16 @@ public class DatabaseController {
     private DatabaseController() {
         mysqlDataSource = new MysqlDataSource();
         mysqlDataSource.setUser(DB_USERNAME);
+        byte[] encoded;
+        String DB_PASS = "";
+        try {
+            encoded = Files.readAllBytes(Paths.get("p.pwd"));
+             DB_PASS = new String(encoded,"UTF-8");
+            System.out.println(DB_PASS);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         mysqlDataSource.setPassword(DB_PASS);
         mysqlDataSource.setUrl(DB_URL);
         try {

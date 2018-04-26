@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.sparkjava.SecurityFilter;
@@ -6,9 +6,7 @@ import spark.Filter;
 import spark.Request;
 import spark.Response;
 
-import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 
 import static spark.Spark.halt;
