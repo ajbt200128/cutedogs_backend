@@ -7,6 +7,9 @@ import controllers.UserController;
 import database.DatabaseController;
 import org.pac4j.sparkjava.SecurityFilter;
 
+import java.io.IOException;
+import java.nio.file.Files;
+
 import static spark.Spark.*;
 
 class Application {
@@ -16,6 +19,16 @@ class Application {
         DogController dogController = new DogController();
         UserController userController = new UserController();
         ImageController imageController = new ImageController();
+        byte[] encoded;
+        String PASS = "";
+        try {
+            encoded = Files.readAllBytes(java.nio.file.Paths.get("p.pwd"));
+            PASS = new String(encoded,"UTF-8");
+            System.out.println(PASS);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        secure("/etc/letsencrypt/live/cutedogs.org/keystore.jks",PASS,"/etc/letsencrypt/live/cutedogs.org/cacerts",PASS);
 
         before( "/*",(request, response) -> {
             response.header("Access-Control-Allow-Origin", "http://localhost:4200");
