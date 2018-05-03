@@ -56,6 +56,14 @@ public class DatabaseController {
         return mysqlDataSource;
     }
 
+    public void pingDB(){
+        try {
+            this.connection.isValid(60*3);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public ResultSet executeQuery(String sql) {
         Statement statement = null;
         try {

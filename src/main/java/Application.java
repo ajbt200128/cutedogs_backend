@@ -9,6 +9,8 @@ import org.pac4j.sparkjava.SecurityFilter;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static spark.Spark.*;
 
@@ -19,15 +21,27 @@ class Application {
         DogController dogController = new DogController();
         UserController userController = new UserController();
         ImageController imageController = new ImageController();
+        DatabaseController database = DatabaseController.getInstance();
+        Pac4jConfig pac4jConfig = Pac4jConfig.getInstance();
+        Timer dbPing = new Timer();
         byte[] encoded;
         String PASS = "";
+
         try {
             encoded = Files.readAllBytes(java.nio.file.Paths.get("p.pwd"));
             PASS = new String(encoded,"UTF-8");
-            System.out.println(PASS);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        dbPing.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                database.pingDB();
+            }
+        },10*60*1000);
+
         secure("/etc/letsencrypt/live/cutedogs.org/keystore.jks",PASS,"/etc/letsencrypt/live/cutedogs.org/cacerts",PASS);
 
         before( "/*",(request, response) -> {
@@ -40,8 +54,7 @@ class Application {
                 halt(200);
 
         });
-        DatabaseController database = DatabaseController.getInstance();
-        Pac4jConfig pac4jConfig = Pac4jConfig.getInstance();
+
         before("/api/user/:username/*", new TypeFilter(new SecurityFilter(pac4jConfig.JWTConfig, "HeaderClient"), "PUT", "POST", "DELETE"));
         post(Paths.CREATE_DOG, dogController.createItem);
         post(Paths.CREATE_IMAGE, imageController.createItem);
