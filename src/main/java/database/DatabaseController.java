@@ -14,7 +14,7 @@ import java.util.List;
 
 public class DatabaseController {
     private static final String DB_USERNAME = "cutedogs";
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/cutedogs";
+    private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/cutedogs";
     private static DatabaseController ourInstance = new DatabaseController();
     private Connection connection;
     private MysqlDataSource mysqlDataSource;
@@ -45,7 +45,8 @@ public class DatabaseController {
             //connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+   
+	}
     }
 
     public static DatabaseController getInstance() {

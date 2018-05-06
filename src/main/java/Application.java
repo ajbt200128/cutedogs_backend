@@ -6,7 +6,7 @@ import controllers.Paths;
 import controllers.UserController;
 import database.DatabaseController;
 import org.pac4j.sparkjava.SecurityFilter;
-
+import database.Tables;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Timer;
@@ -38,9 +38,10 @@ class Application {
         dbPing.schedule(new TimerTask() {
             @Override
             public void run() {
-                database.pingDB();
+                database.executeQuery("SELECT 1 FROM "+ (new Tables.DogTable().getName()));
+		System.out.println("ping");
             }
-        },10*60*1000);
+	    },0,10*60*1000);
 
         secure("/etc/letsencrypt/live/cutedogs.org/keystore.jks",PASS,"/etc/letsencrypt/live/cutedogs.org/cacerts",PASS);
 
